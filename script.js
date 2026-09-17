@@ -1,8 +1,21 @@
-// ---- header: cambia de "idioma de la página" a "banderas + empieza ahora" al scrollear ----
+// ---- header: sombra sutil al scrollear (ya no cambia de contenido) ----
 const topbar = document.getElementById('topbar');
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 80) topbar.classList.add('is-scrolled');
+  if (window.scrollY > 20) topbar.classList.add('is-scrolled');
   else topbar.classList.remove('is-scrolled');
+});
+
+// ---- dropdown de "idioma de la página": click para abrir/cerrar (el hover ya lo maneja el CSS en desktop) ----
+const langDropdown = document.getElementById('langDropdown');
+const langBtn = document.getElementById('langBtn');
+langBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = langDropdown.classList.toggle('open');
+  langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+});
+document.addEventListener('click', () => {
+  langDropdown.classList.remove('open');
+  langBtn.setAttribute('aria-expanded', 'false');
 });
 
 // ---- revelado de secciones e imágenes al entrar en pantalla ----
