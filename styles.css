@@ -116,11 +116,12 @@ h1,h2,h3{font-family:var(--font-display);}
 
 /* ---- pantalla completa con una sola imagen grande ---- */
 .full-image{background:#DEF4FF;align-items:center;padding:60px 32px;}
+.fade-to-blue{background:linear-gradient(180deg,#fff 0%,#fff 55%,#DEF4FF 100%);}
 .img-hotspot-wrap{position:relative;display:block;width:100%;max-width:1150px;margin:0 auto;}
 .img-hotspot-wrap img{width:100%;display:block;}
 .hotspot{position:absolute;border-radius:8px;cursor:pointer;}
 
-.green-block{background:linear-gradient(180deg,#fff 0%,#fff 48%,var(--green) 58%,var(--green) 100%);align-items:center;padding:0;}
+.green-block{background:linear-gradient(180deg,#fff 0%,#fff 52%,var(--green) 52%,var(--green) 100%);align-items:center;padding:0;}
 .green-block-image{width:100%;display:block;}
 
 /* ---- english test ---- */
