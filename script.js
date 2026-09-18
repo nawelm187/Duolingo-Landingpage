@@ -1,9 +1,20 @@
-// ---- header: sombra sutil al scrollear (ya no cambia de contenido) ----
+// ---- header: sombra sutil al scrollear + botón "EMPIEZA AHORA" que aparece cuando el del hero sale de vista ----
 const topbar = document.getElementById('topbar');
 window.addEventListener('scroll', () => {
   if (window.scrollY > 20) topbar.classList.add('is-scrolled');
   else topbar.classList.remove('is-scrolled');
 });
+
+const heroCta = document.getElementById('heroCta');
+if (heroCta) {
+  const heroCtaObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) topbar.classList.remove('show-cta');
+      else topbar.classList.add('show-cta');
+    });
+  }, { rootMargin: `-${76}px 0px 0px 0px`, threshold: 0 });
+  heroCtaObserver.observe(heroCta);
+}
 
 // ---- dropdown de "idioma de la página": click para abrir/cerrar (el hover ya lo maneja el CSS en desktop) ----
 const langDropdown = document.getElementById('langDropdown');
