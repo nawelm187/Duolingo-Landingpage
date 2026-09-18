@@ -113,6 +113,7 @@ h1,h2,h3{font-family:var(--font-display);}
 .feature h2{color:var(--green);font-size:2.2rem;font-weight:800;margin:0;}
 .feature p{color:var(--wolf);font-size:1.05rem;line-height:1.65;max-width:420px;margin:0;}
 .feature .media img{max-width:560px;width:100%;margin:0 auto;}
+.english-test .media img{max-width:430px;}
 
 /* ---- pantalla completa con una sola imagen grande ---- */
 .full-image{background:#DEF4FF;align-items:center;padding:60px 0;}
