@@ -43,3 +43,18 @@ document.querySelectorAll('.lang-chip-row').forEach(row => {
     nextArrow.addEventListener('click', () => row.scrollBy({ left: 220, behavior: 'smooth' }));
   }
 });
+
+// ---- dropdown de "idioma de la página": click para abrir/cerrar (el hover ya lo maneja el CSS en desktop) ----
+const langDropdown = document.getElementById('langDropdown');
+const langBtn = document.getElementById('langBtn');
+if (langBtn && langDropdown) {
+  langBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = langDropdown.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', () => {
+    langDropdown.classList.remove('open');
+    langBtn.setAttribute('aria-expanded', 'false');
+  });
+}
