@@ -1,33 +1,24 @@
 // ---- header: sombra sutil al scrollear + botón "EMPIEZA AHORA" que aparece cuando el del hero sale de vista ----
 const topbar = document.getElementById('topbar');
-window.addEventListener('scroll', () => {
+const heroCta = document.getElementById('heroCta');
+
+function updateHeaderState() {
   if (window.scrollY > 20) topbar.classList.add('is-scrolled');
   else topbar.classList.remove('is-scrolled');
-});
 
-const heroCta = document.getElementById('heroCta');
-if (heroCta) {
-  const heroCtaObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) topbar.classList.remove('show-cta');
-      else topbar.classList.add('show-cta');
-    });
-  }, { rootMargin: `-${76}px 0px 0px 0px`, threshold: 0 });
-  heroCtaObserver.observe(heroCta);
+  if (heroCta) {
+    const rect = heroCta.getBoundingClientRect();
+    // el botón del header aparece recién cuando el botón del hero quedó
+    // realmente tapado por el header (arriba de su borde inferior)
+    const heroCtaHidden = rect.bottom < 76;
+    if (heroCtaHidden) topbar.classList.add('show-cta');
+    else topbar.classList.remove('show-cta');
+  }
 }
 
-// ---- dropdown de "idioma de la página": click para abrir/cerrar (el hover ya lo maneja el CSS en desktop) ----
-const langDropdown = document.getElementById('langDropdown');
-const langBtn = document.getElementById('langBtn');
-langBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  const isOpen = langDropdown.classList.toggle('open');
-  langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-});
-document.addEventListener('click', () => {
-  langDropdown.classList.remove('open');
-  langBtn.setAttribute('aria-expanded', 'false');
-});
+window.addEventListener('scroll', updateHeaderState, { passive: true });
+window.addEventListener('resize', updateHeaderState);
+updateHeaderState();
 
 // ---- revelado de secciones e imágenes al entrar en pantalla ----
 const revealObserver = new IntersectionObserver((entries) => {

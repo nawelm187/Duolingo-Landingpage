@@ -45,33 +45,18 @@ h1,h2,h3{font-family:var(--font-display);}
 .nav-cta{position:absolute;right:0;top:50%;transform:translateY(-50%) translateY(-6px);opacity:0;pointer-events:none;padding:10px 20px;font-size:.85rem;
   transition:opacity .2s ease, transform .2s ease;}
 .topbar.show-cta .nav-cta{opacity:1;transform:translateY(-50%);pointer-events:auto;}
-.lang-dropdown{position:absolute;right:0;top:0;height:100%;display:flex;align-items:center;
+.header-lang-strip{position:absolute;right:0;top:0;height:100%;display:flex;align-items:center;gap:8px;max-width:100%;
   transition:opacity .2s ease;}
-.topbar.show-cta .lang-dropdown{opacity:0;pointer-events:none;}
+.header-lang-strip .lang-chip-row{gap:14px;}
+.header-lang-strip .lang-chip{font-size:.72rem;}
+.header-lang-strip .lang-chip img{width:20px;height:14px;}
+.topbar.show-cta .header-lang-strip{opacity:0;pointer-events:none;}
 
 @media (max-width:640px){
   .topbar-right-group{min-width:170px;}
 }
-.lang-page-select{font-family:var(--font-body);background:none;border:none;font-size:.85rem;font-weight:800;letter-spacing:.5px;color:var(--wolf);display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 4px;white-space:nowrap;}
-.lang-page-select .chev{transition:transform .2s ease;font-size:.9em;}
-.lang-dropdown-panel{
-  position:absolute;top:calc(100% + 8px);right:0;background:#fff;
-  border:1px solid var(--swan);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);
-  padding:8px;min-width:170px;
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;
-  opacity:0;visibility:hidden;transform:translateY(-6px);
-  transition:opacity .18s ease, transform .18s ease, visibility .18s;
-  z-index:200;
-}
-.lang-dropdown-panel a{display:block;padding:8px 10px;border-radius:8px;font-size:.85rem;font-weight:700;color:var(--eel);}
-.lang-dropdown-panel a:hover{background:var(--polar);color:var(--macaw);}
-.lang-dropdown:hover .lang-dropdown-panel,
-.lang-dropdown.open .lang-dropdown-panel{opacity:1;visibility:visible;transform:translateY(0);}
-.lang-dropdown:hover .chev,
-.lang-dropdown.open .chev{transform:rotate(180deg);}
 
 @media (max-width:640px){
-  .lang-page-select{font-size:.68rem;}
   .logo img{height:38px;}
 }
 
