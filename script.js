@@ -8,9 +8,10 @@ function updateHeaderState() {
 
   if (heroCta) {
     const rect = heroCta.getBoundingClientRect();
-    // el botón del header aparece recién cuando el botón del hero quedó
-    // realmente tapado por el header (arriba de su borde inferior)
-    const heroCtaHidden = rect.bottom < 76;
+    // el botón del header aparece recién cuando el del hero quedó
+    // realmente tapado por el header — usa la altura REAL del header,
+    // nunca un número hardcodeado, para que CSS y JS no se desincronicen
+    const heroCtaHidden = rect.bottom < topbar.offsetHeight;
     if (heroCtaHidden) topbar.classList.add('show-cta');
     else topbar.classList.remove('show-cta');
   }
@@ -30,31 +31,53 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 
-document.querySelectorAll('.reveal, .reveal-img').forEach(el => revealObserver.observe(el));
+document.querySelectorAll('.reveal, .reveal-l, .reveal-r, .reveal-scale, .reveal-rotate, .reveal-bounce').forEach(el => revealObserver.observe(el));
 
-// ---- flechas ‹ › : scrollean la fila de banderas horizontalmente ----
+// ---- flechas ‹ › : scrollean la fila de cursos horizontalmente y quedan
+//      disabled cuando no queda más recorrido en esa dirección ----
 document.querySelectorAll('.lang-chip-row').forEach(row => {
   const prevArrow = row.previousElementSibling;
   const nextArrow = row.nextElementSibling;
-  if (prevArrow && prevArrow.classList.contains('arrow')) {
-    prevArrow.addEventListener('click', () => row.scrollBy({ left: -220, behavior: 'smooth' }));
+  const isArrow = el => el && el.classList.contains('arrow');
+
+  function updateArrowState() {
+    const max = row.scrollWidth - row.clientWidth - 1;
+    if (isArrow(prevArrow)) prevArrow.disabled = row.scrollLeft <= 0;
+    if (isArrow(nextArrow)) nextArrow.disabled = row.scrollLeft >= max;
   }
-  if (nextArrow && nextArrow.classList.contains('arrow')) {
-    nextArrow.addEventListener('click', () => row.scrollBy({ left: 220, behavior: 'smooth' }));
-  }
+
+  if (isArrow(prevArrow)) prevArrow.addEventListener('click', () => row.scrollBy({ left: -240, behavior: 'smooth' }));
+  if (isArrow(nextArrow)) nextArrow.addEventListener('click', () => row.scrollBy({ left: 240, behavior: 'smooth' }));
+  row.addEventListener('scroll', updateArrowState, { passive: true });
+  window.addEventListener('resize', updateArrowState);
+  // las banderas son <img> y pueden seguir cargando cuando este script corre
+  // (aunque esté al final del body) — sin esto, el ancho real de la fila
+  // (scrollWidth) puede medirse antes de tiempo y dejar la flecha derecha
+  // con un estado disabled incorrecto hasta el primer resize/scroll manual
+  window.addEventListener('load', updateArrowState);
+  updateArrowState();
 });
 
-// ---- dropdown de "idioma de la página": click para abrir/cerrar (el hover ya lo maneja el CSS en desktop) ----
+// ---- dropdown de "idioma de la página": el click/tap es el ÚNICO mecanismo
+//      de apertura (no hay :hover en el CSS). Funciona igual con mouse y touch. ----
 const langDropdown = document.getElementById('langDropdown');
 const langBtn = document.getElementById('langBtn');
 if (langBtn && langDropdown) {
+  const closeLangDropdown = () => {
+    langDropdown.classList.remove('open');
+    langBtn.setAttribute('aria-expanded', 'false');
+  };
   langBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     const isOpen = langDropdown.classList.toggle('open');
     langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
-  document.addEventListener('click', () => {
-    langDropdown.classList.remove('open');
-    langBtn.setAttribute('aria-expanded', 'false');
+  document.addEventListener('click', closeLangDropdown);
+  langDropdown.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeLangDropdown(); langBtn.focus(); }
   });
+  // no hace falta un listener por cada link: el click en cualquiera de ellos
+  // ya burbujea hasta el listener de document de arriba, que cierra el
+  // dropdown igual — un listener por link sería redundante (se ejecutaría
+  // closeLangDropdown() dos veces por el mismo click)
 }
