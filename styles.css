@@ -240,20 +240,14 @@ h1,h2,h3{font-family:var(--font-display);}
 
 /* ---- transición blanco -> celeste + escena celeste con profundidad ---- */
 .celeste{
-  position:relative;overflow:hidden;padding:48px 32px;
+  position:relative;overflow:hidden;padding:32px 32px;
   background:linear-gradient(180deg,
-    #fff 0%,
-    var(--blue-scene-1) 14%,
-    var(--blue-scene-2) 48%,
-    var(--blue-scene-3) 100%);
+    var(--blue-scene-3) 0%,
+    #6b6fb0 55%,
+    var(--super-bg) 100%);
 }
-.celeste-scene{position:relative;width:100%;height:150px;max-width:1100px;margin:0 auto;}
-/* profundidad: elementos más chicos/traslúcidos = más "lejos" */
-.celeste-scene .floater.deep{opacity:.55;filter:blur(.3px) drop-shadow(0 4px 6px rgba(0,60,120,.08));}
-.celeste-scene .floater.near{filter:drop-shadow(0 8px 14px rgba(0,60,120,.12));}
 @media (max-width:768px){
-  .celeste{padding:32px 20px;}
-  .celeste-scene{height:110px;}
+  .celeste{padding:24px 20px;}
 }
 
 /* ---- features ---- */
@@ -296,7 +290,15 @@ h1,h2,h3{font-family:var(--font-display);}
 /* ---- "aprende cuando quieras y donde quieras": reconstruida en HTML real ----
    Marco de referencia = cuarta imagen duo.png (1502x760). --u = 1 unidad de ese marco,
    así título, badges y objetos escalan juntos y conservan la composición. */
-.anywhere{background:#fff;padding:var(--sp-9) 32px var(--sp-8);position:relative;overflow:hidden;}
+.anywhere{
+  position:relative;overflow:hidden;padding:var(--sp-9) 32px var(--sp-8);
+  background:linear-gradient(180deg,
+    #fff 0%,
+    #fff 30%,
+    var(--blue-scene-1) 46%,
+    var(--blue-scene-2) 72%,
+    var(--blue-scene-3) 100%);
+}
 .anywhere-stage{position:relative;width:min(100%,1502px);margin:0 auto;aspect-ratio:1502/760;container-type:inline-size;--u:calc(100cqw / 1502);}
 .anywhere-inner{position:absolute;left:0;right:0;top:calc(-6 * var(--u));text-align:center;z-index:2;}
 .anywhere h2{
