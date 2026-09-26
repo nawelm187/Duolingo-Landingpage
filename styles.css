@@ -185,8 +185,12 @@ h1,h2,h3{font-family:var(--font-display);}
   display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:1fr auto;}
 .hero-inner{max-width:1150px;margin:0 auto;display:grid;grid-template-columns:1fr .92fr;gap:var(--sp-7);align-items:center;width:100%;position:relative;align-self:center;}
 .hero-media{position:relative;max-width:465px;width:100%;justify-self:end;margin-right:7px;top:-31px;}
-.hero-media img{max-width:100%;width:100%;}
-.hero-media img.hero-float{animation:heroFloat 7.5s ease-in-out infinite;transform-origin:50% 55%;}
+.hero-media img{max-width:100%;width:100%;display:block;}
+/* .hero-media conserva la posición base (ya auditada); .hero-float es un wrapper
+   interno que solo recibe la animación, así el transform del motion nunca pisa
+   el posicionamiento del contenedor exterior */
+.hero-float{animation:heroFloat 7.4s ease-in-out infinite;}
+@keyframes heroFloat{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,-11px,0) rotate(-1deg);}}
 .hero h1{font-size:2rem;font-weight:800;line-height:1.28;color:var(--text);margin:0 0 var(--sp-5);letter-spacing:-.2px;max-width:460px;}
 .hero-ctas{display:flex;flex-direction:column;gap:var(--sp-3);max-width:320px;}
 .hero-ctas .btn{width:100%;text-align:center;}
@@ -225,10 +229,9 @@ h1,h2,h3{font-family:var(--font-display);}
 .reveal-delay-3.in{transition-delay:.36s;}
 
 /* AMBIENTAL: movimiento lento y continuo para elementos decorativos (independiente de la entrada) */
-@keyframes driftA{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,-8px,0) rotate(-2deg);}}
-@keyframes driftB{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,6px,0) rotate(2deg);}}
-@keyframes driftSpin{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,-6px,0) rotate(3deg);}}
-@keyframes heroFloat{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,-9px,0) rotate(1.2deg);}}
+@keyframes driftA{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,-5px,0) rotate(-1.5deg);}}
+@keyframes driftB{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,4px,0) rotate(1.5deg);}}
+@keyframes driftSpin{0%,100%{transform:translate3d(0,0,0) rotate(0deg);} 50%{transform:translate3d(0,-3px,0) rotate(2.5deg);}}
 /* .floater = imagen que se posiciona a sí misma (sin transform de posición, así la animación no la mueve de su sitio)
    .obj    = wrapper de posición (left/top/width en %) ; .drift = imagen interna que lleva SOLO el movimiento ambiental */
 .floater{position:absolute;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.08));z-index:1;}
@@ -240,37 +243,24 @@ h1,h2,h3{font-family:var(--font-display);}
 .floater.a,.floater.b,.floater.c,.drift.a,.drift.b,.drift.c{animation-delay:var(--d,0s);}
 .final-platform .drift{transform-box:fill-box;transform-origin:center;}
 
-/* ---- transición blanco -> celeste + escena celeste ---- */
+/* ---- transición blanco -> celeste + escena celeste con profundidad ---- */
 .celeste{
-  position:relative;overflow:hidden;padding:var(--sp-8) 32px var(--sp-9);
+  position:relative;overflow:hidden;padding:var(--sp-9) 32px;
+  /* degradado blanco -> celeste (según celeste-crop.jpg); el corte a Super
+     (#100F3E) sigue siendo duro, eso NO cambia */
   background:linear-gradient(180deg,
     #fff 0%,
-    var(--blue-scene-1) 12%,
-    var(--blue-scene-2) 36%,
-    var(--blue-scene-3) 72%,
+    var(--blue-scene-1) 20%,
+    var(--blue-scene-2) 55%,
     var(--blue-scene-3) 100%);
 }
-.celeste-scene{position:relative;width:100%;height:500px;max-width:1100px;margin:0 auto;}
-.celeste-main-art{position:absolute;left:50%;top:50%;width:min(430px,42%);transform:translate(-50%,-50%);z-index:2;}
-.celeste-main-img{display:block;width:100%;height:auto;}
-.celeste-floaters{position:absolute;inset:0;z-index:1;}
-/* Solo assets completos: no usar icon_08, que es un recorte defectuoso de icon_09. */
-.celeste-scene .floater{filter:drop-shadow(0 5px 9px rgba(0,60,120,.08));}
+.celeste-scene{position:relative;width:100%;height:380px;max-width:1100px;margin:0 auto;}
+/* profundidad: elementos más chicos/traslúcidos = más "lejos" */
+.celeste-scene .floater.deep{opacity:.55;filter:blur(.3px) drop-shadow(0 4px 6px rgba(0,60,120,.08));}
+.celeste-scene .floater.near{filter:drop-shadow(0 8px 14px rgba(0,60,120,.12));}
 @media (max-width:768px){
-  .celeste{padding:var(--sp-7) 20px var(--sp-8);}
-  .celeste-scene{height:380px;}
-  .celeste-main-art{width:min(300px,68%);}
-  .celeste-floaters .floater:nth-child(1){width:42px !important;}
-  .celeste-floaters .floater:nth-child(2){width:14px !important;}
-  .celeste-floaters .floater:nth-child(3){width:28px !important;}
-  .celeste-floaters .floater:nth-child(4){width:78px !important;}
-  .celeste-floaters .floater:nth-child(5){width:76px !important;}
-  .celeste-floaters .floater:nth-child(6){width:28px !important;}
-}
-@media (max-width:390px){
-  .celeste{padding-left:16px;padding-right:16px;}
-  .celeste-scene{height:340px;}
-  .celeste-main-art{width:min(270px,72%);}
+  .celeste{padding:var(--sp-7) 20px;}
+  .celeste-scene{height:250px;}
 }
 
 /* ---- features ---- */
@@ -492,5 +482,6 @@ footer{background:var(--footer-bg);color:#fff;padding:var(--sp-8) 32px var(--sp-
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto;}
   .reveal,.reveal-l,.reveal-r,.reveal-scale,.reveal-rotate,.reveal-bounce{opacity:1;transform:none;transition:none;}
-  .floater.a,.floater.b,.floater.c,.drift.a,.drift.b,.drift.c,.hero-float{animation:none;}
+  .floater.a,.floater.b,.floater.c,.drift.a,.drift.b,.drift.c{animation:none;}
+  .hero-float{animation:none;}
 }
