@@ -101,7 +101,6 @@ h1,h2,h3{font-family:var(--font-display);}
 .btn-outline:active{transform:translateY(4px);box-shadow:0 0 0 var(--border);}
 .btn:disabled,.btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed;transform:none !important;filter:grayscale(.3);}
 .super .btn{box-shadow:0 4px 0 rgba(0,0,0,.25);}
-.super .btn:active{transform:translateY(4px);box-shadow:0 0 0 rgba(0,0,0,.25);}
 
 /* ---- top bar ---- */
 /* la referencia (pantalla 1 duo.png) no muestra línea divisoria en estado inicial;
@@ -221,8 +220,6 @@ h1,h2,h3{font-family:var(--font-display);}
 /* ENTRADA: bounce sutil (para CTAs / momentos de énfasis) */
 .reveal-bounce{opacity:0;transform:translateY(26px) scale(.92);transition:opacity var(--t-celebration) var(--ease-bounce), transform var(--t-celebration) var(--ease-bounce);}
 .reveal-bounce.in{opacity:1;transform:translateY(0) scale(1);}
-/* legado: usado por elementos que aún no se pasaron al sistema nuevo */
-/* legado: reveal-img fue reemplazado por reveal-scale/reveal-rotate en todas las secciones */
 
 .reveal-delay-1.in{transition-delay:.12s;}
 .reveal-delay-2.in{transition-delay:.24s;}
@@ -243,24 +240,23 @@ h1,h2,h3{font-family:var(--font-display);}
 .floater.a,.floater.b,.floater.c,.drift.a,.drift.b,.drift.c{animation-delay:var(--d,0s);}
 .final-platform .drift{transform-box:fill-box;transform-origin:center;}
 
-/* ---- transición blanco -> celeste + escena celeste con profundidad ---- */
+/* ---- celeste: banda de transición corta entre Anywhere y Super ----
+   Anywhere ya termina su propio degradado blanco->celeste en el 42% de su
+   alto (ver .anywhere), así que aquí NO se reinicia a blanco (eso generaba
+   un parpadeo azul->blanco->azul justo en la costura). Celeste continúa
+   en el mismo tono sólido donde Anywhere lo dejó y el corte a Super sigue
+   siendo duro. */
 .celeste{
-  position:relative;overflow:hidden;padding:var(--sp-9) 32px;
-  /* degradado blanco -> celeste (según celeste-crop.jpg); el corte a Super
-     (#100F3E) sigue siendo duro, eso NO cambia */
-  background:linear-gradient(180deg,
-    #fff 0%,
-    var(--blue-scene-1) 20%,
-    var(--blue-scene-2) 55%,
-    var(--blue-scene-3) 100%);
+  position:relative;overflow:hidden;padding:var(--sp-6) 32px;
+  background:var(--blue-scene-3);
 }
-.celeste-scene{position:relative;width:100%;height:380px;max-width:1100px;margin:0 auto;}
+.celeste-scene{position:relative;width:100%;height:190px;max-width:1100px;margin:0 auto;}
 /* profundidad: elementos más chicos/traslúcidos = más "lejos" */
 .celeste-scene .floater.deep{opacity:.55;filter:blur(.3px) drop-shadow(0 4px 6px rgba(0,60,120,.08));}
 .celeste-scene .floater.near{filter:drop-shadow(0 8px 14px rgba(0,60,120,.12));}
 @media (max-width:768px){
-  .celeste{padding:var(--sp-7) 20px;}
-  .celeste-scene{height:250px;}
+  .celeste{padding:var(--sp-5) 20px;}
+  .celeste-scene{height:120px;}
 }
 
 /* ---- features ---- */
@@ -304,7 +300,7 @@ h1,h2,h3{font-family:var(--font-display);}
    Marco de referencia = cuarta imagen duo.png (1502x760). --u = 1 unidad de ese marco,
    así título, badges y objetos escalan juntos y conservan la composición. */
 .anywhere{
-  position:relative;overflow:hidden;padding:var(--sp-9) 32px var(--sp-8);
+  position:relative;overflow:hidden;padding:var(--sp-9) 32px var(--sp-6);
   background:linear-gradient(180deg,
     #fff 0%,
     var(--blue-scene-1) 16%,
@@ -312,7 +308,7 @@ h1,h2,h3{font-family:var(--font-display);}
     var(--blue-scene-3) 42%,
     var(--blue-scene-3) 100%);
 }
-.anywhere-stage{position:relative;width:min(100%,1502px);margin:0 auto;aspect-ratio:1502/760;container-type:inline-size;--u:calc(100cqw / 1502);}
+.anywhere-stage{position:relative;width:min(100%,1502px);margin:0 auto;aspect-ratio:1502/880;container-type:inline-size;--u:calc(100cqw / 1502);}
 .anywhere-inner{position:absolute;left:0;right:0;top:calc(-6 * var(--u));text-align:center;z-index:2;}
 .anywhere h2{
   color:var(--c-anywhere-title);font-size:calc(48 * var(--u));font-weight:800;line-height:calc(65 * var(--u));
@@ -333,7 +329,7 @@ h1,h2,h3{font-family:var(--font-display);}
 .anywhere-scene .obj img{filter:none;}
 @media (max-width:768px){
   /* móvil: el título y los badges pasan al flujo normal; la escena conserva la misma composición (mismo aspect-ratio) */
-  .anywhere{padding:var(--sp-8) 20px var(--sp-7);}
+  .anywhere{padding:var(--sp-8) 20px var(--sp-5);}
   .anywhere-stage{aspect-ratio:auto;container-type:normal;}
   .anywhere-inner{position:static;}
   .anywhere h2{font-size:1.7rem;line-height:1.25;max-width:420px;margin:0 auto var(--sp-5);}
@@ -342,11 +338,8 @@ h1,h2,h3{font-family:var(--font-display);}
   .store-badge .glyph{width:20px;max-height:24px;}
   .store-badge .lbl small{font-size:.62rem;}
   .store-badge .lbl b{font-size:.85rem;}
-  .anywhere-scene{position:relative;inset:auto;aspect-ratio:1502/760;margin-top:var(--sp-6);}
+  .anywhere-scene{position:relative;inset:auto;aspect-ratio:1502/880;margin-top:var(--sp-6);}
 }
-
-/* ---- pantalla completa con una sola imagen grande (legado, en desuso) ---- */
-
 
 /* ---- english test ---- */
 
