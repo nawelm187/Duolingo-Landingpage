@@ -240,23 +240,20 @@ h1,h2,h3{font-family:var(--font-display);}
 .floater.a,.floater.b,.floater.c,.drift.a,.drift.b,.drift.c{animation-delay:var(--d,0s);}
 .final-platform .drift{transform-box:fill-box;transform-origin:center;}
 
-/* ---- celeste: banda de transición corta entre Anywhere y Super ----
+/* ---- celeste: seam residual entre Anywhere y Super ----
+   Ya no contiene flotantes propios (los 5 que tenía se quitaron: la
+   composición de .anywhere-scene baja y ocupa ese espacio en su lugar).
    Anywhere ya termina su propio degradado blanco->celeste en el 42% de su
-   alto (ver .anywhere), así que aquí NO se reinicia a blanco (eso generaba
-   un parpadeo azul->blanco->azul justo en la costura). Celeste continúa
-   en el mismo tono sólido donde Anywhere lo dejó y el corte a Super sigue
-   siendo duro. */
+   alto (ver .anywhere), así que aquí NO se reinicia a blanco. Celeste
+   continúa en el mismo tono sólido donde Anywhere lo dejó, como colchón
+   corto antes del corte duro a Super. */
 .celeste{
-  position:relative;overflow:hidden;padding:var(--sp-6) 32px;
+  position:relative;overflow:hidden;padding:var(--sp-4) 32px;
   background:var(--blue-scene-3);
 }
-.celeste-scene{position:relative;width:100%;height:190px;max-width:1100px;margin:0 auto;}
-/* profundidad: elementos más chicos/traslúcidos = más "lejos" */
-.celeste-scene .floater.deep{opacity:.55;filter:blur(.3px) drop-shadow(0 4px 6px rgba(0,60,120,.08));}
-.celeste-scene .floater.near{filter:drop-shadow(0 8px 14px rgba(0,60,120,.12));}
+.celeste-scene{position:relative;width:100%;height:0;max-width:1100px;margin:0 auto;}
 @media (max-width:768px){
-  .celeste{padding:var(--sp-5) 20px;}
-  .celeste-scene{height:120px;}
+  .celeste{padding:var(--sp-3) 20px;}
 }
 
 /* ---- features ---- */
@@ -308,7 +305,7 @@ h1,h2,h3{font-family:var(--font-display);}
     var(--blue-scene-3) 42%,
     var(--blue-scene-3) 100%);
 }
-.anywhere-stage{position:relative;width:min(100%,1502px);margin:0 auto;aspect-ratio:1502/880;container-type:inline-size;--u:calc(100cqw / 1502);}
+.anywhere-stage{position:relative;width:min(100%,1502px);margin:0 auto;aspect-ratio:1502/970;container-type:inline-size;--u:calc(100cqw / 1502);}
 .anywhere-inner{position:absolute;left:0;right:0;top:calc(-6 * var(--u));text-align:center;z-index:2;}
 .anywhere h2{
   color:var(--c-anywhere-title);font-size:calc(48 * var(--u));font-weight:800;line-height:calc(65 * var(--u));
@@ -325,7 +322,12 @@ h1,h2,h3{font-family:var(--font-display);}
 .store-badge .lbl{text-align:left;line-height:1.2;white-space:nowrap;}
 .store-badge .lbl small{display:block;font-size:max(7.5px,calc(8.6 * var(--u)));color:var(--text);font-weight:800;}
 .store-badge .lbl b{display:block;font-size:max(9.5px,calc(12 * var(--u)));color:var(--text);font-weight:800;}
-.anywhere-scene{position:absolute;inset:0;z-index:1;}
+/* .anywhere-scene: mismo tamaño/proporción interna de siempre (880 unidades
+   de alto, sobre la base de 1502), pero anclada al fondo de un stage ahora
+   ~90 unidades más alto (970) en vez de estirarse con inset:0. Efecto: la
+   composición baja como bloque (sin cambiar nada interno) y ese espacio
+   extra escala con el ancho igual que el resto de la sección. */
+.anywhere-scene{position:absolute;left:0;right:0;bottom:0;height:calc(880 * var(--u));z-index:1;}
 .anywhere-scene .obj img{filter:none;}
 @media (max-width:768px){
   /* móvil: el título y los badges pasan al flujo normal; la escena conserva la misma composición (mismo aspect-ratio) */
@@ -338,7 +340,7 @@ h1,h2,h3{font-family:var(--font-display);}
   .store-badge .glyph{width:20px;max-height:24px;}
   .store-badge .lbl small{font-size:.62rem;}
   .store-badge .lbl b{font-size:.85rem;}
-  .anywhere-scene{position:relative;inset:auto;aspect-ratio:1502/880;margin-top:var(--sp-6);}
+  .anywhere-scene{position:relative;inset:auto;aspect-ratio:1502/880;margin-top:calc(var(--sp-6) + 85px);}
 }
 
 /* ---- english test ---- */
